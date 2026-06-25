@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTIとソシオニクス 2つの「直観(Ni)」分析・思考傾向診断テスト</title>
+    
+    <!-- SEO & OGP (Twitter Large Image対応) -->
+    <meta name="description" content="あなたの直観(Ni)はMBTI型(構造予測)？それともソシオニクス型(時間・プロセス幻視)？キーワード判定で思考傾向を分析する無料の診断テスト・考察ツールです。">
+    <meta property="og:title" content="MBTIとソシオニクス 2つの「直観(Ni)」分析・思考傾向診断テスト">
+    <meta property="og:description" content="物事を「構造」で捉えるか、「時間」で捉えるか。あなたの直観(Ni)の傾向を全30問の洞察問題から分析します。">
+    <meta property="og:image" content="https://mofu-mitsu.github.io/ni-analysis/ogp.png">
+    <meta property="og:url" content="https://mofu-mitsu.github.io/ni-analysis/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MBTIとソシオニクス 2つの「直観(Ni)」分析・思考傾向診断テスト">
+    <meta name="twitter:description" content="あなたの直観は構造を見抜くMBTI型？時間を幻視するソシオニクス型？思考傾向を分析します。">
+    <meta name="twitter:image" content="https://mofu-mitsu.github.io/ni-analysis/ogp.png">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text x=%2250%%22 y=%2250%%22 style=%22dominant-baseline:central;text-anchor:middle;font-size:90px;%22>🦋</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-container"></div>
+    <div class="clouds-overlay"></div>
+    <div class="sky-overlay"></div>
+    <div class="bottom-glow"></div>
+    <div class="orbs-container" id="orbs-container"></div>
+    <div id="toast-container"></div>
+
+    <!-- 🌟 セキュリティ（CORS）を完全にクリアした超安定テスト音源＆事前読み込み 🌟 -->
+    <audio id="bgm-player" src="https://archive.org/download/ambientforfilm/Twilight.mp3" preload="auto" loop></audio>
+
+    <!-- 確認用モーダル -->
+    <div id="confirm-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-panel-small">
+            <h3><i class="fa-solid fa-triangle-exclamation"></i> タイトルへ戻りますか？</h3>
+            <p>現在の進行状況や入力内容はリセットされます。</p>
+            <div class="modal-actions">
+                <button id="modal-cancel-btn" class="glass-btn secondary-glass-btn">キャンセル</button>
+                <button id="modal-ok-btn" class="glass-btn primary-glass-btn">戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="glass-panel" id="main-panel">
+        <!-- ナビゲーションバー（左右フレックス配置） -->
+        <div class="panel-nav" id="panel-nav">
+            <div class="nav-left">
+                <a href="https://mofu-mitsu.github.io/lab.html" class="home-link" id="lab-home-btn"><i class="fa-solid fa-house-chimney"></i> Lab Home</a>
+                <button class="home-link hidden" id="back-title-btn"><i class="fa-solid fa-arrow-left"></i> タイトルへ戻る</button>
+            </div>
+            <div class="nav-right">
+                <button class="home-link" id="bgm-toggle-btn"><i class="fa-solid fa-volume-xmark"></i> BGM: OFF</button>
+            </div>
+        </div>
+
+        <header>
+            <h1><span class="title-icon">🦋</span> 2つの「直観(Ni)」分析</h1>
+            <p id="header-desc">物事を「構造・直感」で捉えるか、「時間・流れ」で捉えるか。あなたの思考傾向を探ります。</p>
+        </header>
+
+        <div id="title-screen">
+            <div class="intro-box">
+                <p class="intro-main">MBTIのNi（構造予測・本質の抽出・直感）と、ソシオニクスのNi（時間・プロセスの幻視）。<br>同じ「Ni」という名前でも異なる2つの直観の違いを、質問を通して体感してもらうための<strong>問題集・考察ツール</strong>です。</p>
+                <p class="intro-sub">※この判定は、入力された文章から特定のキーワードを抽出する簡易的な仕組みです。タイプを正確に診断するものではなく、あくまで思考の傾向を探るエンターテイメントとしてお楽しみください。</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="user-type"><i class="fa-solid fa-user-tag"></i> 自認タイプ (任意)</label>
+                <input type="text" id="user-type" placeholder="例: INTJ, LII, 5w6 など">
+            </div>
+
+            <div class="form-group">
+                <label for="question-count"><i class="fa-solid fa-list-ol"></i> 出題数 (全30問からランダムに出題)</label>
+                <select id="question-count">
+                    <option value="3">3問（サクッと診断）</option>
+                    <option value="5" selected>5問（じっくり診断）</option>
+                    <option value="10">10問（やりごたえ抜群）</option>
+                    <option value="30">30問（全問耐久！！）</option>
+                </select>
+            </div>
+
+            <button id="start-btn" class="glass-btn primary-glass-btn"><i class="fa-solid fa-person-walking"></i> 散策を始める</button>
+        </div>
+
+        <div id="quiz-screen" class="hidden">
+            <div class="progress">Question <span id="current-q-num">1</span> / <span id="total-q-num">5</span></div>
+            
+            <div class="question-box" id="question-box">
+                <p id="question-text"></p>
+                <div id="butterfly-zone"></div>
+            </div>
+
+            <textarea id="answer-input" placeholder="あなたの考えや予測を自由に入力してください...（空白のまま解答を見ることもできます）"></textarea>
+            
+            <button id="submit-btn" class="glass-btn primary-glass-btn"><i class="fa-solid fa-feather-pointed"></i> 考察する</button>
+            <button id="prev-btn-1" class="glass-btn secondary-glass-btn hidden" style="margin-top: 15px;"><i class="fa-solid fa-arrow-left"></i> 前の景色に戻る</button>
+
+            <div id="result-container" class="hidden">
+                <h2 id="result-title">判定結果</h2>
+                <p id="result-description" class="highlight-text"></p>
+
+                <div class="explanation-box mbti-box">
+                    <h3><i class="fa-solid fa-cube"></i> 構造予測・直感（MBTI）的解答例</h3>
+                    <p id="mbti-example"></p>
+                </div>
+
+                <div class="explanation-box socio-box">
+                    <h3><i class="fa-solid fa-hourglass-half"></i> 時間軸・プロセス（ソシオ）的解答例</h3>
+                    <p id="socio-example"></p>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="prev-btn-2" class="glass-btn secondary-glass-btn" style="margin-top: 0;"><i class="fa-solid fa-arrow-left"></i> 前へ</button>
+                    <button id="next-btn" class="glass-btn primary-glass-btn" style="margin-top: 0;">次の景色へ <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div id="final-result-screen" class="hidden">
+            <h2><i class="fa-solid fa-chart-pie"></i> 分析完了</h2>
+            <div id="final-type-display" class="hidden">
+                <p>自認タイプ: <span id="display-user-type" class="highlight-text"></span></p>
+            </div>
+            
+            <div class="percentage-box">
+                <div class="stat-row"><span class="stat-label"><i class="fa-solid fa-cube"></i> 構造・直感 (MBTI)</span><span class="stat-value" id="mbti-percent">0%</span></div>
+                <div class="stat-bar"><div id="mbti-bar" class="bar-fill mbti-color"></div></div>
+
+                <div class="stat-row"><span class="stat-label"><i class="fa-solid fa-hourglass-half"></i> 時間・流れ (ソシオ)</span><span class="stat-value" id="socio-percent">0%</span></div>
+                <div class="stat-bar"><div id="socio-bar" class="bar-fill socio-color"></div></div>
+
+                <div class="stat-row"><span class="stat-label"><i class="fa-solid fa-lightbulb"></i> 独自視点</span><span class="stat-value" id="unique-percent">0%</span></div>
+                <div class="stat-bar"><div id="unique-bar" class="bar-fill unique-color"></div></div>
+            </div>
+
+            <div class="result-summary">
+                <p id="final-judgement" class="main-judgement"></p>
+                <p id="final-details"></p>
+            </div>
+
+            <p class="disclaimer">※この判定はキーワード抽出による簡易的なものであり、性格タイプを断定するものではありません。あくまで一つのエンターテイメントとしてお楽しみください。</p>
+
+            <div class="action-buttons" id="action-buttons">
+                <button id="save-img-btn" class="glass-btn action-glass-btn"><i class="fa-solid fa-image"></i> 画像で保存</button>
+                <button id="share-btn" class="glass-btn action-glass-btn"><i class="fa-solid fa-share-nodes"></i> シェア</button>
+            </div>
+
+            <button id="restart-btn" class="glass-btn secondary-glass-btn"><i class="fa-solid fa-rotate-left"></i> もう一度散策する</button>
+        </div>
+    </main>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
