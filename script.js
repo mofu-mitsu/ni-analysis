@@ -1,5 +1,5 @@
 // 🌟 ここに作成したGASのWebアプリURL（デプロイURL）を貼り付けてね！ 🌟
-const GAS_WEB_APP_URL = 'YOUR_GAS_WEB_APP_URL';
+const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxypqVLDsdG_z4nnCNCzU184mLMIdHrTp0hr5xA3PxEXPumWz4SD0LHtXTejGCG1XkKLQ/exec';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 街の光（カラフルな玉ボケ）
