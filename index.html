@@ -44,8 +44,7 @@
     <div class="orbs-container" id="orbs-container"></div>
     <div id="toast-container"></div>
 
-    <!-- 🌟 セキュリティ（CORS）を完全にクリアした超安定テスト音源＆事前読み込み 🌟 -->
-    <audio id="bgm-player" src="https://archive.org/download/ambientforfilm/Twilight.mp3" preload="auto" loop></audio>
+    <audio id="bgm-player" src="https://archive.org/download/lofi-plvgkk/Rainy%20Sunday.mp3" preload="auto" loop></audio>
 
     <!-- 確認用モーダル -->
     <div id="confirm-modal" class="modal-overlay hidden">
@@ -84,7 +83,7 @@
             
             <div class="form-group">
                 <label for="user-type"><i class="fa-solid fa-user-tag"></i> 自認タイプ (任意)</label>
-                <input type="text" id="user-type" placeholder="例: INTJ, LII, 5w6 など">
+                <input type="text" id="user-type" placeholder="例: INTJ, LII, INFJ, EII など">
             </div>
 
             <div class="form-group">
@@ -108,7 +107,7 @@
                 <div id="butterfly-zone"></div>
             </div>
 
-            <textarea id="answer-input" placeholder="あなたの考えや予測を自由に入力してください...（空白のまま解答を見ることもできます）"></textarea>
+            <textarea id="answer-input" placeholder="あなたの考えや予測を自由に入力してください...（空白 of 解答を見ることもできます）"></textarea>
             
             <button id="submit-btn" class="glass-btn primary-glass-btn"><i class="fa-solid fa-feather-pointed"></i> 考察する</button>
             <button id="prev-btn-1" class="glass-btn secondary-glass-btn hidden" style="margin-top: 15px;"><i class="fa-solid fa-arrow-left"></i> 前の景色に戻る</button>
@@ -147,7 +146,7 @@
                 <div class="stat-row"><span class="stat-label"><i class="fa-solid fa-hourglass-half"></i> 時間・流れ (ソシオ)</span><span class="stat-value" id="socio-percent">0%</span></div>
                 <div class="stat-bar"><div id="socio-bar" class="bar-fill socio-color"></div></div>
 
-                <div class="stat-row"><span class="stat-label"><i class="fa-solid fa-lightbulb"></i> 独自視点</span><span class="stat-value" id="unique-percent">0%</span></div>
+                <div class="stat-row"><span class="stat-label"><i class="fa-solid fa-lightbulb"></i> 独自・論理分析</span><span class="stat-value" id="unique-percent">0%</span></div>
                 <div class="stat-bar"><div id="unique-bar" class="bar-fill unique-color"></div></div>
             </div>
 
@@ -156,7 +155,14 @@
                 <p id="final-details"></p>
             </div>
 
-            <p class="disclaimer">※この判定はキーワード抽出による簡易的なものであり、性格タイプを断定するものではありません。あくまで一つのエンタメとしてお楽しみください。</p>
+            <!-- 🌟 新設：回答ログ表示＆コピペエリア 🌟 -->
+            <div class="log-container" id="log-container">
+                <h3><i class="fa-solid fa-file-signature"></i> 散策の記録（回答ログ）</h3>
+                <textarea id="log-output" readonly placeholder="散策の記録がここに生成されます..."></textarea>
+                <button id="copy-log-btn" class="glass-btn action-glass-btn" style="margin-top: 10px;"><i class="fa-solid fa-copy"></i> ログをクリップボードにコピー</button>
+            </div>
+
+            <p class="disclaimer">※この判定はキーワード抽出による簡易的なものであり、性格タイプを断定するものではありません。あくまで一つのエンターテイメントとしてお楽しみください。</p>
 
             <div class="action-buttons" id="action-buttons">
                 <button id="save-img-btn" class="glass-btn action-glass-btn"><i class="fa-solid fa-image"></i> 画像で保存</button>
