@@ -1126,3 +1126,85 @@ select option { background: #1e293b; color: white; }
     border-color: var(--neon-blue);
     box-shadow: 0 0 10px rgba(125, 211, 252, 0.2);
 }
+/* -- style.cssの末尾に追加 -- */
+
+/* 🤖 AI予測ボックスのスタイル */
+.ai-prediction-box {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(52, 211, 153, 0.3); /* ネオングリーン */
+    border-radius: 12px;
+    box-shadow: inset 0 0 15px rgba(52, 211, 153, 0.1);
+}
+.ai-prediction-box h4 {
+    margin: 0 0 10px 0;
+    color: var(--neon-green);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Shippori Mincho', serif;
+}
+.ai-type-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    margin: 0 0 10px 0;
+    text-shadow: 0 0 10px rgba(52, 211, 153, 0.6);
+}
+.ai-note {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin: 0;
+}
+
+/* -- 既存のCSSの末尾に追加 -- */
+
+/* 🤖 AI思考スタイル推定（星評価） */
+.ai-prediction-box {
+    margin-top: 25px;
+    padding: 15px 20px;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+}
+.ai-prediction-box h4 {
+    margin: 0 0 15px 0;
+    color: var(--neon-blue);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Shippori Mincho', serif;
+}
+.radar-stats {
+    margin: 15px 0;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+.stat-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    color: #e2e8f0;
+}
+.stat-line:last-child {
+    margin-bottom: 0;
+}
+.stat-line .stars {
+    color: #fcd34d; /* 星のゴールド色 */
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px rgba(252, 211, 77, 0.5);
+}
+.ai-note {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin: 15px 0 0 0;
+    line-height: 1.5;
+}
