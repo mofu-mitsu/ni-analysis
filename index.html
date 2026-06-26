@@ -153,6 +153,16 @@
             <div class="result-summary">
                 <p id="final-judgement" class="main-judgement"></p>
                 <p id="final-details"></p>
+
+                <!-- 🌟 AIによる思考スタイル推定（星評価） 🌟 -->
+                <div class="ai-prediction-box">
+                    <h4><i class="fa-solid fa-robot"></i> AI思考スタイル推定</h4>
+                    <div class="radar-stats" id="ai-radar-stats">
+                        <!-- JSで星が挿入されます -->
+                        <p style="color:#94a3b8; font-size:0.9rem;">計算中...</p>
+                    </div>
+                    <p class="ai-note">※回答の言語パターンからAIが思考のクセを推定するβ版テスト運用です。タイプを判定するものではありません。</p>
+                </div>
             </div>
 
             <!-- 🌟 新設：回答ログ表示＆コピペエリア 🌟 -->
@@ -172,7 +182,6 @@
             <button id="restart-btn" class="glass-btn secondary-glass-btn"><i class="fa-solid fa-rotate-left"></i> もう一度散策する</button>
         </div>
     </main>
-
     <script src="data.js"></script>
     <script src="script.js"></script>
 </body>
