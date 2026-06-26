@@ -1,8 +1,124 @@
 // 🌟 ここに作成したGASのWebアプリURL（デプロイURL）を貼り付けてね！ 🌟
-const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxypqVLDsdG_z4nnCNCzU184mLMIdHrTp0hr5xA3PxEXPumWz4SD0LHtXTejGCG1XkKLQ/exec';
+const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbz6OWYrJEIOJdSzhesXjZWmuAtzevmL2GjGk5eDsH4NqaKSmRxSj4heLWUlVKXCfLLVgA/exec';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 街の光（カラフルな玉ボケ）
+
+    // ==========================================
+    // 🧠 AI思考スタイル推定エンジン (Naive Bayes Classifier)
+    // ==========================================
+    const aiBrain = {
+        wordCounts: {}, 
+        typeCounts: {}, 
+        vocab: new Set()
+    };
+
+    function extractFeatures(text) {
+        let features = [];
+        let cleanedText = text.replace(/[、。・（）()「」\n\s]/g, ""); 
+        for (let i = 0; i < cleanedText.length - 1; i++) {
+            features.push(cleanedText.substring(i, i + 2));
+        }
+        return features;
+    }
+
+    function trainAI(logText, styleClass) {
+        let features = extractFeatures(logText);
+        if (!aiBrain.wordCounts[styleClass]) {
+            aiBrain.wordCounts[styleClass] = {};
+            aiBrain.typeCounts[styleClass] = 0;
+        }
+        aiBrain.typeCounts[styleClass] += 1;
+        features.forEach(word => {
+            aiBrain.wordCounts[styleClass][word] = (aiBrain.wordCounts[styleClass][word] || 0) + 1;
+            aiBrain.vocab.add(word);
+        });
+    }
+
+    function predictThinkingStyle(logText) {
+        let features = extractFeatures(logText);
+        let allScores = {};
+
+        if (Object.keys(aiBrain.typeCounts).length === 0) return null;
+
+        Object.keys(aiBrain.typeCounts).forEach(style => {
+            let score = Math.log(aiBrain.typeCounts[style]); 
+            let totalWordsInType = Object.values(aiBrain.wordCounts[style]).reduce((a, b) => a + b, 0);
+            
+            features.forEach(word => {
+                let wordCount = aiBrain.wordCounts[style][word] || 0;
+                let wordProbability = (wordCount + 1) / (totalWordsInType + aiBrain.vocab.size);
+                score += Math.log(wordProbability);
+            });
+            allScores[style] = score;
+        });
+        
+        let vals = Object.values(allScores);
+        let max = Math.max(...vals);
+        let min = Math.min(...vals);
+        let diff = max - min;
+        
+        let stars = {};
+        for (let key in allScores) {
+            if (diff === 0) {
+                stars[key] = 3;
+            } else {
+                let norm = (allScores[key] - min) / diff;
+                stars[key] = Math.round(1 + 4 * norm);
+            }
+        }
+        return stars;
+    }
+
+    trainAI("本質 構造 システム 概念 法則 根本 レイヤー メカニズム 路線変更 方向性 戦略 運営 パターン", "構造抽象化");
+    trainAI("成熟期 大衆化 移行 フェーズ 年後 未来 過去 衰退 プロセス やがて 最終的 時系列 末路 流れ いずれ 連鎖 トレンド 時代", "時間予測");
+    trainAI("矛盾 パラドックス 整合性 合理性 客観的 根本原因 欠如 乖離 ズレ 手段の目的化 比較 摩擦 逃避 悪循環 マイペース 快適度 置き換える", "論理検証");
+    trainAI("前提 条件 そもそも 不足 だとしたら 理由 意味 定義 疑問 情報不足 わかるわけない 目的 意図 意図的", "前提確認");
+    trainAI("生活 基盤 お金 物理的 現実 限界 維持費 給料 人間関係 環境 土壌 経験 実際のところ どうせ やばい どうにかしないと 最悪", "現実補完");
+    trainAI("あるいは かもしれない 妄想 可能性 例えば 予測 伏線 ストーリー テーマ 象徴 もしくは 多分 気がする なんとなく", "独自仮説");
+
+    trainAI("そもそも情報不足じゃない？まずその人が今何歳なのかもわからないし、仕事してるのかも知らないしわかるわけなくない？？？アイディアも何に対するアイディアなのかわからないし…なんともいえなくないか？だって生活が不安定だと、自由にお金が使えなくなるわけだしそう考えると自由に生きたいも、安定が欲しいも矛盾はしてないと思う", "前提確認");
+    trainAI("誰も修理しないのは修理できるような技術持ってる人がいないとしか言いようがもしくはいたとしてもどうでもいいと思っててやる気がないんだよきっとボスに逆らえないからみんな意見言わないんだろうなとかねパワハラとかなんじゃない？多分", "現実補完");
+    
+    trainAI("快適度を言葉に置き換えているだけで基本的にはマイペースの追求を目的としている。世間はそう甘くないからまたシャッター通りとなる可能性も高い。この世に完璧はない。何事もトライアンドエラーを繰り返していくだけ。神聖な儀式、つまりは合理性からかけ離れた風習のようなもの。意図も意味もないことを突きつけたかったんだろ。", "論理検証");
+    
+    trainAI("「自由に生きたい」すらも窮屈な環境への裏返しでしかなく、真に自分が願ったことでないと気がついたのかもしれない。塞ぎ込んでいるかもしれない。あるいは、自分の才能を潰して社会に適応しているかもしれない。", "独自仮説");
+
+    async function loadServerData() {
+        if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes('YOUR_GAS_WEB_APP_URL')) return;
+        try {
+            console.log("📡 AIが過去の記憶をダウンロード中...");
+            let response = await fetch(GAS_WEB_APP_URL);
+            let data = await response.json();
+            
+            data.forEach(item => {
+                if(item.text && item.type) {
+                    let t = item.type.toUpperCase();
+                    if (t.includes("INTJ") || t.includes("LII")) {
+                        trainAI(item.text, "構造抽象化"); trainAI(item.text, "論理検証"); trainAI(item.text, "前提確認");
+                    } else if (t.includes("ILI")) {
+                        trainAI(item.text, "時間予測"); trainAI(item.text, "論理検証"); trainAI(item.text, "現実補完");
+                    } else if (t.includes("INFJ") || t.includes("EII")) {
+                        trainAI(item.text, "構造抽象化"); trainAI(item.text, "独自仮説"); trainAI(item.text, "現実補完");
+                    } else if (t.includes("IEI")) {
+                        trainAI(item.text, "時間予測"); trainAI(item.text, "独自仮説"); trainAI(item.text, "現実補完");
+                    } else if (t.includes("ENTP") || t.includes("ILE")) {
+                        trainAI(item.text, "独自仮説"); trainAI(item.text, "論理検証"); trainAI(item.text, "前提確認");
+                    } else if (t.includes("INTP") || t.includes("LSI")) {
+                        trainAI(item.text, "論理検証"); trainAI(item.text, "前提確認"); trainAI(item.text, "現実補完");
+                    }
+                }
+            });
+            console.log(`🧠 AI進化完了！`);
+        } catch (err) {
+            console.error("AIデータのダウンロード失敗", err);
+        }
+    }
+    loadServerData();
+
+    // ==========================================
+    // 🦋 UIとゲームロジック
+    // ==========================================
+
     const orbsContainer = document.getElementById('orbs-container');
     const colors = [
         'radial-gradient(circle, rgba(255, 150, 50, 1) 0%, rgba(255, 150, 50, 0) 70%)',
@@ -45,7 +161,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function scheduleNextButterfly() { setTimeout(() => { spawnButterfly(); scheduleNextButterfly(); }, Math.random() * 7000 + 8000); }
     scheduleNextButterfly();
 
-    // 🎵 BGMトグル機能
     const bgmPlayer = document.getElementById('bgm-player');
     const bgmBtn = document.getElementById('bgm-toggle-btn');
     let isBgmPlaying = false;
@@ -57,7 +172,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 isBgmPlaying = true;
                 showToast("BGMを再生します🎵");
             }).catch((err) => {
-                console.error("BGM Play Error:", err);
                 showToast("BGMの再生に失敗しました。ロード中か、ブラウザにブロックされた可能性があります。");
             });
         } else {
@@ -203,9 +317,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let mPoints = 0, sPoints = 0, uPoints = 0, ansCount = 0;
+        let allAnswersText = ""; 
+
         selectedQuestions.forEach(q => {
             if (!q.isSkipped) {
                 ansCount++;
+                allAnswersText += q.userAnswer + " ";
                 if (q.mbtiScore > q.socioScore) mPoints++;
                 else if (q.socioScore > q.mbtiScore) sPoints++;
                 else if (q.mbtiScore > 0 && q.mbtiScore === q.socioScore) { mPoints += 0.5; sPoints += 0.5; }
@@ -250,11 +367,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         judgementEl.innerText = finalJudgementText;
 
-        // 🌟 回答ログテキストの生成 🌟
+        // 🌟 現実補完にSiを追加！ 🌟
+        let aiLogText = "";
+        const aiRadarEl = document.getElementById('ai-radar-stats');
+        
+        if (ansCount > 0 && allAnswersText.length > 10) {
+            let stars = predictThinkingStyle(allAnswersText);
+            if (stars) {
+                let html = "";
+                const styleNames = ["構造抽象化", "時間予測", "論理検証", "前提確認", "現実補完", "独自仮説"];
+                // 現実補完の表記を Si/Se/Ne的 に変更
+                const mbtiMap = {"構造抽象化":"MBTI的Ni", "時間予測":"ソシオ的Ni", "論理検証":"Ti的", "前提確認":"Ti/Te的", "現実補完":"Si/Se/Ne的", "独自仮説":"Ne的"};
+                
+                styleNames.forEach(key => {
+                    let starCount = stars[key] || 1;
+                    let starStr = "★".repeat(starCount) + "☆".repeat(5 - starCount);
+                    html += `<div class="stat-line"><span>${key} <span style="font-size:0.75rem;color:#94a3b8;">(${mbtiMap[key]})</span></span> <span class="stars">${starStr}</span></div>`;
+                    aiLogText += `${key}: ${starStr}\n`;
+                });
+                aiRadarEl.innerHTML = html;
+            } else {
+                aiRadarEl.innerHTML = `<p style="color:#94a3b8; font-size:0.9rem;">判定不能（データ不足）</p>`;
+            }
+        } else {
+            aiRadarEl.innerHTML = `<p style="color:#94a3b8; font-size:0.9rem;">判定不能（文字数不足）</p>`;
+        }
+
         let logText = `--- 2つの「直観(Ni)」分析 散策の記録 ---\n`;
         if (userType) logText += `自認タイプ: ${userType}\n`;
         logText += `総合結果: ${finalJudgementText}\n`;
-        logText += `構造・直感(MBTI): ${mbtiPercent}% | 時間・流れ(ソシオ): ${socioPercent}% | 独自・論理分析: ${uniquePercent}%\n`;
+        logText += `構造・直感(MBTI): ${mbtiPercent}% | 時間・流れ(ソシオ): ${socioPercent}% | 独自・論理分析: ${uniquePercent}%\n\n`;
+        logText += `🤖 AI思考スタイル推定:\n${aiLogText}`;
         logText += `==========================================\n\n`;
 
         selectedQuestions.forEach((q, idx) => {
@@ -263,9 +406,9 @@ document.addEventListener('DOMContentLoaded', () => {
             logText += `\n------------------------------------------\n\n`;
         });
 
-        document.getElementById('log-output').value = logText;
+        const logOutputEl = document.getElementById('log-output');
+        if (logOutputEl) logOutputEl.value = logText;
 
-        // GASへデータを送信
         sendDataToGas({
             userType: userType || '未指定',
             result: finalJudgementText,
@@ -281,37 +424,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function sendDataToGas(payload) {
-        if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL === 'YOUR_GAS_WEB_APP_URL') {
-            console.log("GASのURLが未設定のため、送信をスキップしました。");
-            return;
-        }
-
+        if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes('YOUR_GAS_WEB_APP_URL')) return;
         fetch(GAS_WEB_APP_URL, {
             method: 'POST',
             mode: 'no-cors', 
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
-        })
-        .then(() => console.log("データをGAS経由で送信しました。"))
-        .catch(err => console.error("GASデータ送信エラー:", err));
+        }).catch(err => console.error(err));
     }
 
-    // 🌟 コピペ用のログコピーイベント（安全・確実な二重処理） 🌟
-    document.getElementById('copy-log-btn').addEventListener('click', () => {
-        const logOutput = document.getElementById('log-output');
-        try {
-            logOutput.select();
-            logOutput.setSelectionRange(0, 99999); // モバイル対応
-            document.execCommand('copy');
-            showToast("回答ログをコピーしました！🦋");
-        } catch (err) {
-            navigator.clipboard.writeText(logOutput.value)
-                .then(() => showToast("回答ログをコピーしました！🦋"))
-                .catch(() => showToast("コピーに失敗しました。手動で選択してコピーしてください。"));
-        }
-    });
+    const copyLogBtn = document.getElementById('copy-log-btn');
+    if (copyLogBtn) {
+        copyLogBtn.addEventListener('click', () => {
+            const logOutput = document.getElementById('log-output');
+            try {
+                logOutput.select();
+                logOutput.setSelectionRange(0, 99999); 
+                document.execCommand('copy');
+                showToast("回答ログをコピーしました！🦋");
+            } catch (err) {
+                navigator.clipboard.writeText(logOutput.value).then(() => showToast("回答ログをコピーしました！🦋")).catch(() => showToast("コピー失敗"));
+            }
+        });
+    }
 
-    // --- タイトルへ戻る処理（確認モーダル） ---
     document.getElementById('back-title-btn').addEventListener('click', () => {
         confirmModal.classList.remove('hidden');
     });
@@ -326,44 +462,51 @@ document.addEventListener('DOMContentLoaded', () => {
         finalResultScreen.classList.add('hidden');
         titleScreen.classList.remove('hidden');
         updateHeaderButtons(); 
-        
         document.getElementById('mbti-bar').style.width = `0%`;
         document.getElementById('socio-bar').style.width = `0%`;
         document.getElementById('unique-bar').style.width = `0%`;
     });
 
-    // --- 画像保存機能 ---
+    // ==================================================
+    // 🌟 画像保存機能（スマホでもPCと同じ700px幅のレイアウトで美しく保存！） 🌟
+    // ==================================================
     document.getElementById('save-img-btn').addEventListener('click', () => {
         showToast("画像を生成中です...🦋");
         const panel = document.getElementById('main-panel');
-        
-        const actionBtns = document.getElementById('action-buttons');
-        const restartBtn = document.getElementById('restart-btn');
-        const headerDesc = document.getElementById('header-desc'); 
-        const panelNav = document.getElementById('panel-nav'); 
-        const logContainer = document.getElementById('log-container'); // 🌟 画像保存時は回答ログエリアも隠す！
-        
-        actionBtns.style.display = 'none';
-        restartBtn.style.display = 'none';
-        headerDesc.style.display = 'none';
-        panelNav.style.display = 'none';
-        logContainer.style.display = 'none'; // スクショから隠す
 
         html2canvas(panel, {
             backgroundColor: "#1a2535", 
-            scale: 2 
+            scale: 2,
+            windowWidth: 800, // 仮想的にPCの画面幅をシミュレート！
+            onclone: (clonedDoc) => {
+                const clonedPanel = clonedDoc.getElementById('main-panel');
+                if (clonedPanel) {
+                    // スマホでもPCと同じ幅・レイアウトを強制する！
+                    clonedPanel.style.width = '700px';
+                    clonedPanel.style.maxWidth = '700px';
+                    clonedPanel.style.margin = '40px auto';
+                    clonedPanel.style.padding = '40px';
+                    clonedPanel.style.height = 'auto'; // 下まで展開
+                    clonedPanel.style.maxHeight = 'none';
+                    clonedPanel.style.overflowY = 'visible';
+
+                    // 🌟 ボタン類を hidden クラス（!important）で確実に消滅させる！ 🌟
+                    const hideIds = ['action-buttons', 'restart-btn', 'header-desc', 'panel-nav', 'log-container'];
+                    hideIds.forEach(id => {
+                        const el = clonedDoc.getElementById(id);
+                        if (el) el.classList.add('hidden');
+                    });
+                }
+            }
         }).then(canvas => {
             const link = document.createElement('a');
             link.download = 'ni-analysis-result.png';
             link.href = canvas.toDataURL('image/png');
             link.click();
-            
-            actionBtns.style.display = 'flex';
-            restartBtn.style.display = 'block';
-            headerDesc.style.display = 'block';
-            panelNav.style.display = 'flex'; 
-            logContainer.style.display = 'block'; // 元に戻す
             showToast("保存が完了しました！");
+        }).catch(err => {
+            console.error("画像生成エラー:", err);
+            showToast("画像の生成に失敗しました。");
         });
     });
 
@@ -371,15 +514,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const mbti = document.getElementById('mbti-percent').innerText;
         const socio = document.getElementById('socio-percent').innerText;
         const unique = document.getElementById('unique-percent').innerText;
-        
         const shareText = `🦋 2つの「直観(Ni)」分析 🦋\n私の思考傾向は ${finalJudgementText} でした！\n\n構造・直感(MBTI): ${mbti}\n時間・流れ(Socio): ${socio}\n独自視点: ${unique}\n\n#2つの直観分析\nhttps://mofu-mitsu.github.io/ni-analysis/`;
         
         if (navigator.share) {
             navigator.share({ title: 'MBTIとソシオニクス 2つの「直観(Ni)」分析', text: shareText, url: 'https://mofu-mitsu.github.io/ni-analysis/' }).catch(console.error);
         } else {
-            navigator.clipboard.writeText(shareText)
-                .then(() => showToast("結果をクリップボードにコピーしました！"))
-                .catch(() => showToast("シェア機能がサポートされていません。"));
+            navigator.clipboard.writeText(shareText).then(() => showToast("コピーしました！")).catch(() => showToast("シェア機能非対応です"));
         }
     });
 
