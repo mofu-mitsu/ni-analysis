@@ -1,5 +1,5 @@
 // 🌟 ここに作成したGASのWebアプリURL（デプロイURL）を貼り付けてね！ 🌟
-const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxypqVLDsdG_z4nnCNCzU184mLMIdHrTp0hr5xA3PxEXPumWz4SD0LHtXTejGCG1XkKLQ/exec';
+const GAS_WEB_APP_URL = 'YOUR_GAS_WEB_APP_URL';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 街の光（カラフルな玉ボケ）
@@ -58,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast("BGMを再生します🎵");
             }).catch((err) => {
                 console.error("BGM Play Error:", err);
-                // 🌟 ここを分かりやすい汎用メッセージに修正！
                 showToast("BGMの再生に失敗しました。ロード中か、ブラウザにブロックされた可能性があります。");
             });
         } else {
@@ -251,6 +250,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         judgementEl.innerText = finalJudgementText;
 
+        // 🌟 回答ログテキストの生成 🌟
+        let logText = `--- 2つの「直観(Ni)」分析 散策の記録 ---\n`;
+        if (userType) logText += `自認タイプ: ${userType}\n`;
+        logText += `総合結果: ${finalJudgementText}\n`;
+        logText += `構造・直感(MBTI): ${mbtiPercent}% | 時間・流れ(ソシオ): ${socioPercent}% | 独自・論理分析: ${uniquePercent}%\n`;
+        logText += `==========================================\n\n`;
+
+        selectedQuestions.forEach((q, idx) => {
+            logText += `【Q${idx + 1}】\n${q.question}\n\n`;
+            logText += `(あなたの回答):\n${q.userAnswer || '（スキップ）'}\n`;
+            logText += `\n------------------------------------------\n\n`;
+        });
+
+        document.getElementById('log-output').value = logText;
+
+        // GASへデータを送信
         sendDataToGas({
             userType: userType || '未指定',
             result: finalJudgementText,
@@ -281,6 +296,21 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(err => console.error("GASデータ送信エラー:", err));
     }
 
+    // 🌟 コピペ用のログコピーイベント（安全・確実な二重処理） 🌟
+    document.getElementById('copy-log-btn').addEventListener('click', () => {
+        const logOutput = document.getElementById('log-output');
+        try {
+            logOutput.select();
+            logOutput.setSelectionRange(0, 99999); // モバイル対応
+            document.execCommand('copy');
+            showToast("回答ログをコピーしました！🦋");
+        } catch (err) {
+            navigator.clipboard.writeText(logOutput.value)
+                .then(() => showToast("回答ログをコピーしました！🦋"))
+                .catch(() => showToast("コピーに失敗しました。手動で選択してコピーしてください。"));
+        }
+    });
+
     // --- タイトルへ戻る処理（確認モーダル） ---
     document.getElementById('back-title-btn').addEventListener('click', () => {
         confirmModal.classList.remove('hidden');
@@ -310,12 +340,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const actionBtns = document.getElementById('action-buttons');
         const restartBtn = document.getElementById('restart-btn');
         const headerDesc = document.getElementById('header-desc'); 
-        const panelNav = document.getElementById('panel-nav'); // 🌟 ナビバーを1行で一括非表示！
+        const panelNav = document.getElementById('panel-nav'); 
+        const logContainer = document.getElementById('log-container'); // 🌟 画像保存時は回答ログエリアも隠す！
         
         actionBtns.style.display = 'none';
         restartBtn.style.display = 'none';
         headerDesc.style.display = 'none';
         panelNav.style.display = 'none';
+        logContainer.style.display = 'none'; // スクショから隠す
 
         html2canvas(panel, {
             backgroundColor: "#1a2535", 
@@ -329,7 +361,8 @@ document.addEventListener('DOMContentLoaded', () => {
             actionBtns.style.display = 'flex';
             restartBtn.style.display = 'block';
             headerDesc.style.display = 'block';
-            panelNav.style.display = 'flex'; // 元に戻す
+            panelNav.style.display = 'flex'; 
+            logContainer.style.display = 'block'; // 元に戻す
             showToast("保存が完了しました！");
         });
     });
