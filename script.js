@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return stars;
     }
 
+    // 🚀 初期学習データ
     trainAI("本質 構造 システム 概念 法則 根本 レイヤー メカニズム 路線変更 方向性 戦略 運営 パターン", "構造抽象化");
     trainAI("成熟期 大衆化 移行 フェーズ 年後 未来 過去 衰退 プロセス やがて 最終的 時系列 末路 流れ いずれ 連鎖 トレンド 時代", "時間予測");
     trainAI("矛盾 パラドックス 整合性 合理性 客観的 根本原因 欠如 乖離 ズレ 手段の目的化 比較 摩擦 逃避 悪循環 マイペース 快適度 置き換える", "論理検証");
@@ -78,11 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     trainAI("そもそも情報不足じゃない？まずその人が今何歳なのかもわからないし、仕事してるのかも知らないしわかるわけなくない？？？アイディアも何に対するアイディアなのかわからないし…なんともいえなくないか？だって生活が不安定だと、自由にお金が使えなくなるわけだしそう考えると自由に生きたいも、安定が欲しいも矛盾はしてないと思う", "前提確認");
     trainAI("誰も修理しないのは修理できるような技術持ってる人がいないとしか言いようがもしくはいたとしてもどうでもいいと思っててやる気がないんだよきっとボスに逆らえないからみんな意見言わないんだろうなとかねパワハラとかなんじゃない？多分", "現実補完");
-    
     trainAI("快適度を言葉に置き換えているだけで基本的にはマイペースの追求を目的としている。世間はそう甘くないからまたシャッター通りとなる可能性も高い。この世に完璧はない。何事もトライアンドエラーを繰り返していくだけ。神聖な儀式、つまりは合理性からかけ離れた風習のようなもの。意図も意味もないことを突きつけたかったんだろ。", "論理検証");
-    
     trainAI("「自由に生きたい」すらも窮屈な環境への裏返しでしかなく、真に自分が願ったことでないと気がついたのかもしれない。塞ぎ込んでいるかもしれない。あるいは、自分の才能を潰して社会に適応しているかもしれない。", "独自仮説");
 
+    // 📡 GASから過去のデータを読み込んでAIを賢くする（MBTI・ソシオ完全独立版！）
     async function loadServerData() {
         if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL.includes('YOUR_GAS_WEB_APP_URL')) return;
         try {
@@ -93,22 +93,51 @@ document.addEventListener('DOMContentLoaded', () => {
             data.forEach(item => {
                 if(item.text && item.type) {
                     let t = item.type.toUpperCase();
-                    if (t.includes("INTJ") || t.includes("LII")) {
-                        trainAI(item.text, "構造抽象化"); trainAI(item.text, "論理検証"); trainAI(item.text, "前提確認");
-                    } else if (t.includes("ILI")) {
-                        trainAI(item.text, "時間予測"); trainAI(item.text, "論理検証"); trainAI(item.text, "現実補完");
-                    } else if (t.includes("INFJ") || t.includes("EII")) {
-                        trainAI(item.text, "構造抽象化"); trainAI(item.text, "独自仮説"); trainAI(item.text, "現実補完");
-                    } else if (t.includes("IEI")) {
-                        trainAI(item.text, "時間予測"); trainAI(item.text, "独自仮説"); trainAI(item.text, "現実補完");
-                    } else if (t.includes("ENTP") || t.includes("ILE")) {
-                        trainAI(item.text, "独自仮説"); trainAI(item.text, "論理検証"); trainAI(item.text, "前提確認");
-                    } else if (t.includes("INTP") || t.includes("LSI")) {
-                        trainAI(item.text, "論理検証"); trainAI(item.text, "前提確認"); trainAI(item.text, "現実補完");
-                    }
+                    
+                    // 🌟 MBTI 16タイプの判定（独立） 🌟
+                    if (t.includes("INTJ")) { trainAI(item.text, "構造抽象化"); trainAI(item.text, "論理検証"); trainAI(item.text, "前提確認"); }
+                    if (t.includes("INTP")) { trainAI(item.text, "論理検証"); trainAI(item.text, "独自仮説"); trainAI(item.text, "前提確認"); }
+                    if (t.includes("ENTJ")) { trainAI(item.text, "構造抽象化"); trainAI(item.text, "時間予測"); trainAI(item.text, "前提確認"); }
+                    if (t.includes("ENTP")) { trainAI(item.text, "独自仮説"); trainAI(item.text, "論理検証"); trainAI(item.text, "前提確認"); }
+                    
+                    if (t.includes("INFJ")) { trainAI(item.text, "構造抽象化"); trainAI(item.text, "独自仮説"); trainAI(item.text, "時間予測"); }
+                    if (t.includes("INFP")) { trainAI(item.text, "独自仮説"); trainAI(item.text, "現実補完"); trainAI(item.text, "時間予測"); }
+                    if (t.includes("ENFJ")) { trainAI(item.text, "構造抽象化"); trainAI(item.text, "時間予測"); trainAI(item.text, "独自仮説"); }
+                    if (t.includes("ENFP")) { trainAI(item.text, "独自仮説"); trainAI(item.text, "現実補完"); trainAI(item.text, "前提確認"); }
+                    
+                    if (t.includes("ISTJ")) { trainAI(item.text, "現実補完"); trainAI(item.text, "論理検証"); trainAI(item.text, "前提確認"); }
+                    if (t.includes("ISTP")) { trainAI(item.text, "現実補完"); trainAI(item.text, "論理検証"); trainAI(item.text, "独自仮説"); }
+                    if (t.includes("ESTJ")) { trainAI(item.text, "現実補完"); trainAI(item.text, "前提確認"); trainAI(item.text, "構造抽象化"); }
+                    if (t.includes("ESTP")) { trainAI(item.text, "現実補完"); trainAI(item.text, "論理検証"); trainAI(item.text, "時間予測"); }
+                    
+                    if (t.includes("ISFJ")) { trainAI(item.text, "現実補完"); trainAI(item.text, "前提確認"); trainAI(item.text, "時間予測"); }
+                    if (t.includes("ISFP")) { trainAI(item.text, "現実補完"); trainAI(item.text, "独自仮説"); trainAI(item.text, "時間予測"); }
+                    if (t.includes("ESFJ")) { trainAI(item.text, "現実補完"); trainAI(item.text, "時間予測"); trainAI(item.text, "前提確認"); }
+                    if (t.includes("ESFP")) { trainAI(item.text, "現実補完"); trainAI(item.text, "独自仮説"); trainAI(item.text, "前提確認"); }
+
+                    // 🌟 ソシオニクス 16タイプの判定（MBTIと同時に吸収可能！） 🌟
+                    if (t.includes("LII")) { trainAI(item.text, "構造抽象化"); trainAI(item.text, "論理検証"); trainAI(item.text, "前提確認"); }
+                    if (t.includes("ILI")) { trainAI(item.text, "時間予測"); trainAI(item.text, "論理検証"); trainAI(item.text, "現実補完"); }
+                    if (t.includes("LIE")) { trainAI(item.text, "時間予測"); trainAI(item.text, "構造抽象化"); trainAI(item.text, "前提確認"); }
+                    if (t.includes("ILE")) { trainAI(item.text, "独自仮説"); trainAI(item.text, "論理検証"); trainAI(item.text, "前提確認"); }
+                    
+                    if (t.includes("EII")) { trainAI(item.text, "構造抽象化"); trainAI(item.text, "独自仮説"); trainAI(item.text, "現実補完"); }
+                    if (t.includes("IEI")) { trainAI(item.text, "時間予測"); trainAI(item.text, "独自仮説"); trainAI(item.text, "現実補完"); }
+                    if (t.includes("EIE")) { trainAI(item.text, "時間予測"); trainAI(item.text, "構造抽象化"); trainAI(item.text, "独自仮説"); }
+                    if (t.includes("IEE")) { trainAI(item.text, "独自仮説"); trainAI(item.text, "現実補完"); trainAI(item.text, "時間予測"); }
+                    
+                    if (t.includes("LSI")) { trainAI(item.text, "論理検証"); trainAI(item.text, "現実補完"); trainAI(item.text, "前提確認"); }
+                    if (t.includes("SLE")) { trainAI(item.text, "現実補完"); trainAI(item.text, "論理検証"); trainAI(item.text, "独自仮説"); }
+                    if (t.includes("LSE")) { trainAI(item.text, "前提確認"); trainAI(item.text, "現実補完"); trainAI(item.text, "構造抽象化"); }
+                    if (t.includes("SLI")) { trainAI(item.text, "現実補完"); trainAI(item.text, "前提確認"); trainAI(item.text, "論理検証"); }
+                    
+                    if (t.includes("ESI")) { trainAI(item.text, "現実補完"); trainAI(item.text, "前提確認"); trainAI(item.text, "時間予測"); }
+                    if (t.includes("SEE")) { trainAI(item.text, "現実補完"); trainAI(item.text, "独自仮説"); trainAI(item.text, "時間予測"); }
+                    if (t.includes("ESE")) { trainAI(item.text, "時間予測"); trainAI(item.text, "現実補完"); trainAI(item.text, "前提確認"); }
+                    if (t.includes("SEI")) { trainAI(item.text, "現実補完"); trainAI(item.text, "時間予測"); trainAI(item.text, "独自仮説"); }
                 }
             });
-            console.log(`🧠 AI進化完了！`);
+            console.log(`🧠 AI進化完了！全32タイプの思考スタイルを独立して学習しました！`);
         } catch (err) {
             console.error("AIデータのダウンロード失敗", err);
         }
@@ -367,7 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         judgementEl.innerText = finalJudgementText;
 
-        // 🌟 現実補完にSiを追加！ 🌟
+        // 🌟 AIによる思考スタイル推定（★評価）
         let aiLogText = "";
         const aiRadarEl = document.getElementById('ai-radar-stats');
         
@@ -376,7 +405,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (stars) {
                 let html = "";
                 const styleNames = ["構造抽象化", "時間予測", "論理検証", "前提確認", "現実補完", "独自仮説"];
-                // 現実補完の表記を Si/Se/Ne的 に変更
                 const mbtiMap = {"構造抽象化":"MBTI的Ni", "時間予測":"ソシオ的Ni", "論理検証":"Ti的", "前提確認":"Ti/Te的", "現実補完":"Si/Se/Ne的", "独自仮説":"Ne的"};
                 
                 styleNames.forEach(key => {
@@ -467,47 +495,75 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('unique-bar').style.width = `0%`;
     });
 
-    // ==================================================
-    // 🌟 画像保存機能（スマホでもPCと同じ700px幅のレイアウトで美しく保存！） 🌟
-    // ==================================================
     document.getElementById('save-img-btn').addEventListener('click', () => {
         showToast("画像を生成中です...🦋");
         const panel = document.getElementById('main-panel');
+        const actionBtns = document.getElementById('action-buttons');
+        const restartBtn = document.getElementById('restart-btn');
+        const headerDesc = document.getElementById('header-desc'); 
+        const panelNav = document.getElementById('panel-nav'); 
+        const logContainer = document.getElementById('log-container'); 
+        
+        if (actionBtns) actionBtns.style.display = 'none';
+        if (restartBtn) restartBtn.style.display = 'none';
+        if (headerDesc) headerDesc.style.display = 'none';
+        if (panelNav) panelNav.style.display = 'none';
+        if (logContainer) logContainer.style.display = 'none'; 
 
-        html2canvas(panel, {
-            backgroundColor: "#1a2535", 
-            scale: 2,
-            windowWidth: 800, // 仮想的にPCの画面幅をシミュレート！
-            onclone: (clonedDoc) => {
-                const clonedPanel = clonedDoc.getElementById('main-panel');
-                if (clonedPanel) {
-                    // スマホでもPCと同じ幅・レイアウトを強制する！
-                    clonedPanel.style.width = '700px';
-                    clonedPanel.style.maxWidth = '700px';
-                    clonedPanel.style.margin = '40px auto';
-                    clonedPanel.style.padding = '40px';
-                    clonedPanel.style.height = 'auto'; // 下まで展開
-                    clonedPanel.style.maxHeight = 'none';
-                    clonedPanel.style.overflowY = 'visible';
+        const originalHeight = panel.style.height;
+        const originalOverflow = panel.style.overflowY;
+        const originalMaxHeight = panel.style.maxHeight;
+        
+        panel.style.height = 'auto';
+        panel.style.maxHeight = 'none';
+        panel.style.overflowY = 'visible';
+        
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        window.scrollTo(0, 0);
 
-                    // 🌟 ボタン類を hidden クラス（!important）で確実に消滅させる！ 🌟
-                    const hideIds = ['action-buttons', 'restart-btn', 'header-desc', 'panel-nav', 'log-container'];
-                    hideIds.forEach(id => {
-                        const el = clonedDoc.getElementById(id);
-                        if (el) el.classList.add('hidden');
-                    });
+        setTimeout(() => {
+            html2canvas(panel, {
+                backgroundColor: "#1a2535", 
+                scale: 2,
+                windowWidth: 800, 
+                onclone: (clonedDoc) => {
+                    const clonedPanel = clonedDoc.getElementById('main-panel');
+                    if (clonedPanel) {
+                        clonedPanel.style.width = '700px';
+                        clonedPanel.style.maxWidth = '700px';
+                        clonedPanel.style.margin = '40px auto';
+                        clonedPanel.style.padding = '40px';
+                        clonedPanel.style.height = 'auto'; 
+                        clonedPanel.style.maxHeight = 'none';
+                        clonedPanel.style.overflowY = 'visible';
+
+                        const hideIds = ['action-buttons', 'restart-btn', 'header-desc', 'panel-nav', 'log-container'];
+                        hideIds.forEach(id => {
+                            const el = clonedDoc.getElementById(id);
+                            if (el) el.classList.add('hidden');
+                        });
+                    }
                 }
-            }
-        }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = 'ni-analysis-result.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-            showToast("保存が完了しました！");
-        }).catch(err => {
-            console.error("画像生成エラー:", err);
-            showToast("画像の生成に失敗しました。");
-        });
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'ni-analysis-result.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                if (actionBtns) actionBtns.style.display = 'flex';
+                if (restartBtn) restartBtn.style.display = 'block';
+                if (headerDesc) headerDesc.style.display = 'block';
+                if (panelNav) panelNav.style.display = 'flex'; 
+                if (logContainer) logContainer.style.display = 'block'; 
+
+                panel.style.height = originalHeight;
+                panel.style.maxHeight = originalMaxHeight;
+                panel.style.overflowY = originalOverflow;
+                window.scrollTo(0, scrollTop);
+
+                showToast("保存が完了しました！");
+            });
+        }, 100); 
     });
 
     document.getElementById('share-btn').addEventListener('click', () => {
